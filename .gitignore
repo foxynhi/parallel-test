@@ -1,7 +1,6 @@
 # Ignore build output
 bin/
 obj/
-TestResults/
 
 # Ignore user-specific files
 *.user
@@ -33,3 +32,12 @@ Reports/
 
 # Ignore NuGet packages (if not restoring from package.config)
 packages/
+
+# Test results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# GitHub Actions
+.github/workflows/*.log
