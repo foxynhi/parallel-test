@@ -1,0 +1,35 @@
+# Ignore build output
+bin/
+obj/
+TestResults/
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+
+# Ignore VS Code settings
+.vscode/
+.vs/
+
+# Ignore logs and reports
+*.log
+logs/
+*.tmp
+*.bak
+
+# Ignore Selenium drivers (optional if you store them locally)
+*.exe
+*.dll
+
+# Ignore .NET user secrets
+secrets.json
+
+# Ignore screenshots or test artifacts
+Screenshots/
+Reports/
+
+# Ignore NuGet packages (if not restoring from package.config)
+packages/
