@@ -8,8 +8,9 @@ namespace ParalelTest.Utilities
   public class Report
   {
     private static ExtentReports extent;
-    private static ExtentHtmlReporter htmlReporter;
-    private static ExtentTest test;
+    private static ExtentSparkReporter spark;
+    private static readonly object lockObj = new object();
+    private static ThreadLocal<ExtentTest> test = new ThreadLocal<ExtentTest>();
 
     public static void InitReport()
     {
@@ -22,8 +23,8 @@ namespace ParalelTest.Utilities
         string fileName = path + TestContext.CurrentContext.Test.MethodName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".html";
         Console.WriteLine($"Report file path: {fileName}");
         extent = new ExtentReports();
-        htmlReporter = new ExtentHtmlReporter(fileName);
-        extent.AttachReporter(htmlReporter);
+        spark = new ExtentSparkReporter(fileName);
+        extent.AttachReporter(spark);
       }
       catch (Exception ex)
       {
@@ -38,7 +39,7 @@ namespace ParalelTest.Utilities
       }
       if (extent != null)
       {
-        test = extent.CreateTest(testName);
+        test.Value = extent.CreateTest(testName);
       }
     }
     public static void FlushReport()
@@ -54,19 +55,19 @@ namespace ParalelTest.Utilities
     }
     public static void LogInfo(string message)
     {
-      test.Info(message);
+      test.Value?.Info(message);
     }
     public static void LogFail(string message)
     {
-      test.Fail(message);
+      test.Value?.Fail(message);
     }
     public static void LogPass(string message)
     {
-      test.Pass(message);
+      test.Value?.Pass(message);
     }
     public static void LogScreenShot(string message, string img)
     {
-      test.Info(message, MediaEntityBuilder.CreateScreenCaptureFromBase64String(img).Build());
+      test.Value?.Info(message, MediaEntityBuilder.CreateScreenCaptureFromBase64String(img).Build());
     }
   }
 }

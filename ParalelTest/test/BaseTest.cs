@@ -34,8 +34,9 @@ namespace ParalelTest.Test
         var driver = DriverManager.GetDriver();
         driver.Manage().Window.Maximize();
         driver.Navigate().GoToUrl("https://matkinhshady.com/");
+
         Report.InitReport();
-        Report.CreateTest(TestContext.CurrentContext.Test.MethodName);
+        Report.CreateTest(TestContext.CurrentContext.Test.Name);
         basePage = new BasePage();
         homePage = new HomePage();
       }
