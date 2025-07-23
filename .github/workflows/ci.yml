@@ -38,3 +38,9 @@ jobs:
 
       - name: Run NUnit Tests
         run: dotnet test --configuration Release --no-build --verbosity normal --logger trx --results-directory TestResults
+
+      - name: Upload Extent HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestReport
+          path: D:\a\parallel-test\parallel-test\TestResults\CI_Report.html
