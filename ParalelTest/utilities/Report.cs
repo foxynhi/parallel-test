@@ -20,7 +20,9 @@ namespace ParalelTest.Utilities
         {
           Directory.CreateDirectory(path);
         }
-        string fileName = path + TestContext.CurrentContext.Test.MethodName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".html";
+        string fileName = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
+          ? Path.Combine(path, "CI_Report.html")
+          : path + TestContext.CurrentContext.Test.MethodName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".html";
         Console.WriteLine($"Report file path: {fileName}");
         extent = new ExtentReports();
         spark = new ExtentSparkReporter(fileName);
