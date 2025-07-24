@@ -16,12 +16,13 @@ namespace ParalelTest.Utilities
     {
       try {
         string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults\\"));
+        Console.WriteLine("path ", path);
         if (!Directory.Exists(path))
         {
           Directory.CreateDirectory(path);
         }
         string fileName = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
-          ? Path.Combine(path, "CI_Report.html")
+          ? Path.Combine(path, TestContext.CurrentContext.Test.MethodName + "-CI_Report.html")
           : path + TestContext.CurrentContext.Test.MethodName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".html";
         Console.WriteLine($"Report file path: {fileName}");
         extent = new ExtentReports();
