@@ -7,8 +7,8 @@ namespace ParalelTest.Utilities
 {
   public class Report
   {
-    private static ExtentReports extent;
-    private static ExtentSparkReporter spark;
+    private static ThreadLocal<ExtentReports> extent = new ThreadLocal<ExtentReports>();
+    private static ThreadLocal<ExtentSparkReporter> spark = new ThreadLocal<ExtentSparkReporter>();
     private static readonly object lockObj = new object();
     private static ThreadLocal<ExtentTest> test = new ThreadLocal<ExtentTest>();
 
@@ -25,9 +25,9 @@ namespace ParalelTest.Utilities
           ? Path.Combine(path, TestContext.CurrentContext.Test.MethodName + "-CI_Report.html")
           : path + TestContext.CurrentContext.Test.MethodName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".html";
         Console.WriteLine($"Report file path: {fileName}");
-        extent = new ExtentReports();
-        spark = new ExtentSparkReporter(fileName);
-        extent.AttachReporter(spark);
+        var report = new ExtentReports();
+        var reporter = new ExtentSparkReporter(fileName);
+        report.AttachReporter(reporter);
       }
       catch (Exception ex)
       {
@@ -42,14 +42,14 @@ namespace ParalelTest.Utilities
       }
       if (extent != null)
       {
-        test.Value = extent.CreateTest(testName);
+        test.Value = extent.Value?.CreateTest(testName);
       }
     }
     public static void FlushReport()
     {
       try
       {
-        extent?.Flush();
+        extent.Value?.Flush();
       }
       catch (Exception ex)
       {
