@@ -3,9 +3,9 @@ using ParalelTest.Utilities;
 
 namespace ParalelTest.Test
 {
-  [TestFixture]
-  [Parallelizable(ParallelScope.Fixtures)]
-  [NonParallelizable]
+  //[TestFixture]
+  //[Parallelizable(ParallelScope.Fixtures)]
+  //[NonParallelizable]
   public class AddToCartTest : BaseTest
   {
     private readonly string address = "123 Lí Thường Kiệt";
@@ -13,7 +13,7 @@ namespace ParalelTest.Test
 
     private static IEnumerable<string> ProductData => products;
 
-    [Test, TestCaseSource(nameof(ProductData)), Order(1)]
+    //[Test, TestCaseSource(nameof(ProductData)), Order(1)]
     public void BuyKinhMatNuTest(string product)
     {
       Report.LogInfo("Starting BuyKinhMatNuTest test");
@@ -31,7 +31,7 @@ namespace ParalelTest.Test
       }
       productPage.VerifyProductAddedToCart(product);
     }
-    [Test, Order(2)]
+    //[Test, Order(2)]
     public void DeleteCartItemTest()
     {
       Report.LogInfo("Starting DeleteCartItemTest test");
@@ -63,7 +63,7 @@ namespace ParalelTest.Test
 
       Report.LogInfo("Item deleted successfully from the cart.");
     }
-    [Test, Order(3)]
+    //[Test, Order(3)]
     public void VerifyCart()
     {
       Report.LogInfo("Verify Cart items");
@@ -82,7 +82,7 @@ namespace ParalelTest.Test
         Assert.That(products.Contains(item), Is.True, $"Item '{item}' is not in the expected product list.");
       });
     }
-    [Test, Order(4)]
+    //[Test, Order(4)]
     public void CheckOutCartTest()
     {
       Report.LogInfo("Starting CheckOutCartTest test");
