@@ -43,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: TestReport
-          path: D:\a\parallel-test\parallel-test\TestResults\CI_Report.html
+          path: ./TestResults/
