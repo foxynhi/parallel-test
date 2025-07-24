@@ -50,5 +50,5 @@ jobs:
         if: always()
         with:
           name: NUnit Test Results
-          path: TestResults/*.trx
+          path: ./TestResults/*.trx
           reporter: dotnet-trx

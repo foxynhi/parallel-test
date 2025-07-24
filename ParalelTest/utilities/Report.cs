@@ -19,7 +19,6 @@ namespace ParalelTest.Utilities
           return;
         string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults"));
 
-         Console.WriteLine("path " + path);
         lock (lockObj)
         {
           if (!Directory.Exists(path))
