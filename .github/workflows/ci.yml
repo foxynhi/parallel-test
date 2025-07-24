@@ -2,9 +2,9 @@ name: Run Web Auto Tests
 
 on:
   push:
-    branches: [ "morden" ]
+    branches: [ "master", "morden" ]
   pull_request:
-    branches: [ "morden" ]
+    branches: [ "master", "morden" ]
 
 jobs:
   test:
