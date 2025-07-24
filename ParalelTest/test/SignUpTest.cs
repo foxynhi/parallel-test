@@ -1,15 +1,17 @@
 ﻿using NUnit.Framework;
+using ParalelTest.Utilities;
 using System;
 
 namespace ParalelTest.Test
 {
+  [TestFixture]
+  [Parallelizable(ParallelScope.All)]
   public class SignUpTest : BaseTest
   {
     [Test]
-    [Parallelizable(ParallelScope.Self)]
     public void SignUp()
     {
-      //ExtentReporting.LogInfo("Starting SignUp test");
+      Report.LogInfo("Starting SignUp test");
       var signUpPage = homePage.GoToLogInPage().GoToSignUpPage();
       signUpPage.VerifySignUpPage();
 
@@ -19,7 +21,7 @@ namespace ParalelTest.Test
       string password = "PuQ8a6eg!ptG";
       var signUpResult = signUpPage.SignUp(lastName, firstName, email, password);
       //Assert.That(signUpResult, Is.True);
-      //ExtentReporting.LogInfo($"SignUp completed with email: {email}, password: {password}");
+      //Report.LogInfo($"SignUp completed with email: {email}, password: {password}");
       //Assert.That(homePage.IsUserLoggedIn(email), Is.True);
     }
   }

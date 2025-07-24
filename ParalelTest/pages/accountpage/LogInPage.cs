@@ -16,20 +16,27 @@ namespace ParalelTest.Pages.AccountPage
     public void LogIn(string email, string password)
     {
       WaitUtility.WaitForElementToBeVisible(emailInp);
-      //ExtentReporting.LogInfo($"Entering {email} and {password} for login.");
+      Report.LogInfo($"Entering {email} and {password} for login.");
       SendKeys(emailInp, email);
       SendKeys(passwordInp, password);
       WaitUtility.WaitForElementToBeClickable(logInBtn);
-      //ExtentReporting.LogInfo("Clicking the Log In button.");
+      Report.LogInfo("Clicking the Log In button.");
       Click(logInBtn);
     }
 
     public SignUpPage GoToSignUpPage()
     {
-      //ExtentReporting.LogInfo("Navigating to Sign Up page.");
+      Report.LogInfo("Navigating to Sign Up page.");
       WaitUtility.WaitForElementToBeClickable(SignUpBtn);
       Click(SignUpBtn);
       return new SignUpPage();
+    }
+    public AddressPage GoToAddressPage()
+    {
+      Report.LogInfo("Navigating to Address page.");
+      WaitUtility.WaitForElementToBeClickable(addressInfo);
+      Click(addressInfo);
+      return new AddressPage();
     }
   }
 }

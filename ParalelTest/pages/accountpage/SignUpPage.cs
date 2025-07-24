@@ -20,7 +20,7 @@ namespace ParalelTest.Pages.AccountPage
 
     public bool VerifySignUpPage()
     {
-      //ExtentReporting.LogInfo("Verifying Sign Up page is displayed.");
+      //Report.LogInfo("Verifying Sign Up page is displayed.");
       WaitUtility.WaitForElementToBeVisible(title);
       return Find(title).Displayed;
     }
@@ -46,16 +46,16 @@ namespace ParalelTest.Pages.AccountPage
         WaitUtility.WaitForElementToBeClickable(signUpBtn);
         Click(signUpBtn);
         WaitUtility.WaitForElementToBeVisible(errorMessage, 2);
-        //ExtentReporting.LogFail($"Sign Up failed with error: {Find(errorMessage).Text}");
+        Report.LogFail($"Sign Up failed with error: {Find(errorMessage).Text}");
         return false;
       }
       catch (NoSuchElementException)
       {
-        //ExtentReporting.LogPass("Sign Up successfully");
+        Report.LogPass("Sign Up successfully");
       }
       catch (WebDriverTimeoutException)
       {
-        //ExtentReporting.LogPass("Sign Up successfully, no error message displayed");
+        Report.LogPass("Sign Up successfully, no error message displayed");
       }
       return true;
     }

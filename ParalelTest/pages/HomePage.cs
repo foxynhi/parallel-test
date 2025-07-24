@@ -1,8 +1,8 @@
 ﻿using OpenQA.Selenium;
 using ParalelTest.Base;
 using ParalelTest.Pages.AccountPage;
+using ParalelTest.Pages.ProductCategoryPage;
 using ParalelTest.Utilities;
-using System;
 
 namespace ParalelTest.Pages
 
@@ -20,7 +20,7 @@ namespace ParalelTest.Pages
 
     public LogInPage GoToLogInPage()
     {
-      //ExtentReporting.LogInfo("Navigating to Log In Page.");
+      //Report.LogInfo("Navigating to Log In Page.");
       WaitUtility.WaitForElementToBeClickable(accountBtn, 10);
       Click(accountBtn);
       return new LogInPage();
@@ -32,13 +32,45 @@ namespace ParalelTest.Pages
       try
       {
         WaitUtility.WaitForElementToBeVisible(loggedInEmail, 10);
-        //ExtentReporting.LogInfo($"Checking if user is logged in with email: '{email}'");
+        //Report.LogInfo($"Checking if user is logged in with email: '{email}'");
         return Find(loggedInEmail).Text.Equals(email, StringComparison.OrdinalIgnoreCase);
       }
       catch (NoSuchElementException)
       {
         return false;
       }
+    }
+    public KinhMatNuPage GoToKinhMatNu()
+    {
+      try
+      {
+        Report.LogInfo("Navigating to Kính Mắt Nữ.");
+        WaitUtility.WaitForElementToBeClickable(liKinhMat);
+        ActionsUtility.MoveToElement(liKinhMat);
+        Report.LogInfo("Click Kinh Mat Nu submenu");
+        WaitUtility.WaitForElementToBeClickable(subMenuKMNu);
+        //ActionsUtility.MoveToElement(subMenuKMNu);
+        Click(subMenuKMNu);
+        return new KinhMatNuPage();
+      }
+      catch (NoSuchElementException)
+      {
+        Console.WriteLine("Navigation elements not found.");
+        return null;
+      }
+    }
+    public void ClickCartButton()
+    {
+      Report.LogInfo("Clicking on Cart button.");
+      WaitUtility.WaitForElementToBeClickable(cartBtn);
+      Click(cartBtn);
+    }
+    public CartPage GoToCartPage()
+    {
+      Report.LogInfo("Navigate to View Cart Page");
+      ClickCartButton();
+      WaitUtility.WaitForElementToBeClickable(viewCartBtn).Click();
+      return new CartPage();
     }
   }
 }

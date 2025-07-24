@@ -8,7 +8,6 @@ using ParalelTest.Utilities;
 namespace ParalelTest.Test
 {
   [TestFixture]
-  [Parallelizable(ParallelScope.All)]
   public class BaseTest
   {
     protected IWebDriver driver;
@@ -16,9 +15,17 @@ namespace ParalelTest.Test
     protected HomePage homePage;
     protected string email = "Nguyen102500@gmail.com";
     protected string password = "PuQ8a6eg!ptG";
+
+    protected static readonly List<string> products = new List<string>
+    {
+      "Molsion Eyewear - Sunglasses - MS3070",
+      "Gucci Eyewear - Sunglasses - GG1681S",
+      "Exfash Eyewear - Sunglasses - EF54710"
+    };
+
     protected void LogIn()
     {
-      //Report.LogInfo("Starting LogIn test");
+      Report.LogInfo("Starting LogIn test");
 
       var logInPage = homePage.GoToLogInPage();
       logInPage.LogIn(email, password);
@@ -71,7 +78,7 @@ namespace ParalelTest.Test
       }
       try
       {
-        Report.Cleanup(); // Clean up thread-local resources
+        Report.Cleanup();
       }
       catch (Exception ex)
       {
