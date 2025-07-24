@@ -21,7 +21,7 @@ namespace ParalelTest.Utilities
           ? Path.Combine(Environment.CurrentDirectory, "TestResults")
           : Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults"));
 
-        Report.LogInfo("path " + path);
+         Console.WriteLine("path " + path);
         lock (lockObj)
         {
           if (!Directory.Exists(path))
@@ -32,7 +32,7 @@ namespace ParalelTest.Utilities
         string fileName = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
           ? Path.Combine(path, $"{TestContext.CurrentContext.Test.MethodName}-CI_Report.html")
           : Path.Combine(path, $"{TestContext.CurrentContext.Test.MethodName}_{DateTime.Now:dd-MM-yyyy_HH-mm-ss}.html");
-        Report.LogInfo($"Report file path: {fileName}");
+         Console.WriteLine($"Report file path: {fileName}");
 
         var reporter = new ExtentSparkReporter(fileName);
         var report = new ExtentReports();
@@ -43,7 +43,7 @@ namespace ParalelTest.Utilities
       }
       catch (Exception ex)
       {
-        Report.LogFail($"Failed to initialize report: {ex.Message}");
+        Console.WriteLine($"Failed to initialize report: {ex.Message}");
         extent = null;
       }
     }
@@ -68,7 +68,7 @@ namespace ParalelTest.Utilities
       }
       catch (Exception ex)
       {
-        Report.LogFail($"Failed to flush report: {ex.Message}");
+        Console.WriteLine($"Failed to flush report: {ex.Message}");
       }
     }
     public static void Cleanup()
@@ -82,7 +82,7 @@ namespace ParalelTest.Utilities
       }
       catch (Exception ex)
       {
-        Report.LogFail($"Failed to cleanup report resources: {ex.Message}");
+        Console.WriteLine($"Failed to cleanup report resources: {ex.Message}");
       }
     }
     public static void LogInfo(string message)
