@@ -15,45 +15,74 @@ namespace ParalelTest.Utilities
     public static void InitReport()
     {
       try {
-        string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults\\"));
-        Console.WriteLine("path ", path);
-        if (!Directory.Exists(path))
+        if (extent.Value != null)
+          return;
+        string path = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
+          ? Path.Combine(Environment.CurrentDirectory, "TestResults")
+          : Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults"));
+
+        Report.LogInfo("path " + path);
+        lock (lockObj)
         {
-          Directory.CreateDirectory(path);
+          if (!Directory.Exists(path))
+          {
+            Directory.CreateDirectory(path);
+          }
         }
         string fileName = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
-          ? Path.Combine(path, TestContext.CurrentContext.Test.MethodName + "-CI_Report.html")
-          : path + TestContext.CurrentContext.Test.MethodName + "_" + DateTime.Now.ToString("dd-MM-yyyy_HH-mm-ss") + ".html";
-        Console.WriteLine($"Report file path: {fileName}");
-        var report = new ExtentReports();
+          ? Path.Combine(path, $"{TestContext.CurrentContext.Test.MethodName}-CI_Report.html")
+          : Path.Combine(path, $"{TestContext.CurrentContext.Test.MethodName}_{DateTime.Now:dd-MM-yyyy_HH-mm-ss}.html");
+        Report.LogInfo($"Report file path: {fileName}");
+
         var reporter = new ExtentSparkReporter(fileName);
+        var report = new ExtentReports();
         report.AttachReporter(reporter);
+
+        spark.Value = reporter;
+        extent.Value = report;
       }
       catch (Exception ex)
       {
-        Console.WriteLine($"Failed to initialize report: {ex.Message}");
+        Report.LogFail($"Failed to initialize report: {ex.Message}");
         extent = null;
       }
     }
     public static void CreateTest(string testName)
     {
-      if (extent == null) {
+      if (extent.Value == null) {
         InitReport();
       }
-      if (extent != null)
+      if (extent.Value != null)
       {
-        test.Value = extent.Value?.CreateTest(testName);
+        test.Value = extent.Value.CreateTest(testName);
       }
     }
     public static void FlushReport()
     {
       try
       {
-        extent.Value?.Flush();
+        if (extent.Value != null)
+        {
+          extent.Value.Flush();
+        }
       }
       catch (Exception ex)
       {
-        Console.WriteLine($"Failed to flush report: {ex.Message}");
+        Report.LogFail($"Failed to flush report: {ex.Message}");
+      }
+    }
+    public static void Cleanup()
+    {
+      try
+      {
+        extent.Value?.Flush();
+        extent.Value = null;
+        spark.Value = null;
+        test.Value = null;
+      }
+      catch (Exception ex)
+      {
+        Report.LogFail($"Failed to cleanup report resources: {ex.Message}");
       }
     }
     public static void LogInfo(string message)

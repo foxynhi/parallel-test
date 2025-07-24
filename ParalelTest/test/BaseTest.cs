@@ -28,6 +28,7 @@ namespace ParalelTest.Test
     [SetUp]
     public void Setup()
     {
+      Report.LogInfo($"Starting setup on thread {Thread.CurrentThread.ManagedThreadId}");
       try
       {
         DriverManager.InitDriver();
@@ -37,13 +38,15 @@ namespace ParalelTest.Test
 
         Report.InitReport();
         Report.CreateTest(TestContext.CurrentContext.Test.Name);
+        Report.LogInfo($"Test started on thread {Thread.CurrentThread.ManagedThreadId}");
+
         basePage = new BasePage();
         homePage = new HomePage();
       }
       catch (Exception ex)
       {
-          Console.WriteLine($"Setup failed: {ex.Message}");
-          throw; // Re-throw to fail the test
+        Report.LogFail($"Setup failed: {ex.Message}");
+          throw;
       }
     }
 
@@ -56,7 +59,7 @@ namespace ParalelTest.Test
       }
       catch (Exception ex)
       {
-        Console.WriteLine($"EndTest failed: {ex.Message}");
+        Report.LogFail($"EndTest failed: {ex.Message}");
       }
       try
       {
@@ -64,16 +67,23 @@ namespace ParalelTest.Test
       }
       catch (Exception ex)
       {
-        Console.WriteLine($"FlushReport failed: {ex.Message}");
+        Report.LogFail($"FlushReport failed: {ex.Message}");
       }
-
+      try
+      {
+        Report.Cleanup(); // Clean up thread-local resources
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"Report cleanup failed: {ex.Message}");
+      }
       try
       {
         DriverManager.QuitDriver();
       }
       catch (Exception ex)
       {
-        Console.WriteLine($"QuitDriver failed: {ex.Message}");
+        Report.LogFail($"QuitDriver failed: {ex.Message}");
       }
     }
     private void EndTest()
@@ -88,7 +98,7 @@ namespace ParalelTest.Test
           break;
         case TestStatus.Failed:
           Report.LogFail($"Test failed: {message}");
-          //Report.LogScreenShot("Screenshot is logged at", ScreenshotUtility.TakeScreenshotAsBase64());
+          Report.LogScreenShot("Screenshot is logged at", ScreenshotUtility.TakeScreenshotAsBase64());
           //ScreenshotUtility.TakeScreenshotToFile(TestContext.CurrentContext.Test.MethodName);
           break;
         case TestStatus.Skipped:
@@ -98,7 +108,7 @@ namespace ParalelTest.Test
           Report.LogInfo("Test completed with unknown status");
           break;
       }
-      Report.LogInfo("Test ended");
+      Report.LogInfo($"Test ended on thread {Thread.CurrentThread.ManagedThreadId}");
     }
   }
 }
