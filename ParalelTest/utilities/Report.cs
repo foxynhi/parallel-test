@@ -17,9 +17,7 @@ namespace ParalelTest.Utilities
       try {
         if (extent.Value != null)
           return;
-        string path = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
-          ? Path.Combine(Environment.CurrentDirectory, "TestResults")
-          : Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults"));
+        string path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "TestResults"));
 
          Console.WriteLine("path " + path);
         lock (lockObj)
