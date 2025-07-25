@@ -39,5 +39,4 @@ coverage/
 *.coverage
 *.coveragexml
 
-# GitHub Actions
 .github/workflows/*.log
