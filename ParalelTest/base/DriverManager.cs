@@ -8,6 +8,9 @@ namespace ParalelTest.Base
   {
     private static ThreadLocal<IWebDriver> driver = new ThreadLocal<IWebDriver>();
 
+    private static ThreadLocal<string> tempProfileDir = new ThreadLocal<string>(
+      () => Path.Combine(Path.GetTempPath(), Path.GetRandomFileName())
+      );
     public static void InitDriver()
     {
       if (driver.Value == null)
@@ -36,6 +39,9 @@ namespace ParalelTest.Base
         options.AddArgument("--disable-backgrounding-occluded-windows");
         options.AddArgument("--disable-renderer-backgrounding");
 
+        Console.WriteLine($"Using temporary profile directory: {tempProfileDir}");
+        options.AddArgument($"--user-data-dir={tempProfileDir.Value}");
+
         driver.Value = new ChromeDriver(options);
         driver.Value.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(30);
         driver.Value.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(30);
@@ -58,6 +64,7 @@ namespace ParalelTest.Base
         try
         {
           driver.Value.Quit();
+          Directory.Delete(tempProfileDir.Value, true);
         }
         catch (Exception ex)
         {
