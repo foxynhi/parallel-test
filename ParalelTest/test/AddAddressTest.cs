@@ -18,7 +18,7 @@ namespace ParalelTest.Test
     public void AddAddress()
     {
       Report.LogInfo("Starting Add Address test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var addressPage = homePage.GoToLogInPage().GoToAddressPage();
       Assert.That(addressPage.IsOnAddressPage(), Is.True, "Not on Address Page");
 
@@ -34,7 +34,7 @@ namespace ParalelTest.Test
     public void VerifyAddedAddress()
     {
       Report.LogInfo("Starting Verify Added Address test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var addressPage = homePage.GoToLogInPage().GoToAddressPage();
       Assert.That(addressPage.IsOnAddressPage(), Is.True, "Not on Address Page");
 

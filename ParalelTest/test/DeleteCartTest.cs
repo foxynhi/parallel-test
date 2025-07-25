@@ -10,7 +10,7 @@ namespace ParalelTest.Test
     public void DeleteAllCartTest()
     {
       Report.LogInfo("Starting DeleteAllCartTest test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
 
@@ -24,7 +24,7 @@ namespace ParalelTest.Test
     public void DeleteCartItemTest()
     {
       Report.LogInfo("Starting DeleteCartItemTest test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
 

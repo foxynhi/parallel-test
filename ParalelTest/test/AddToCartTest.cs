@@ -17,7 +17,7 @@ namespace ParalelTest.Test
     public void BuyKinhMatNuTest(string product)
     {
       Report.LogInfo("Starting BuyKinhMatNuTest test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
 
       var kinhMatNuPage = homePage.GoToKinhMatNu();
       Assert.That(kinhMatNuPage.IsOnKinhMatNuPage(), Is.True);
@@ -35,7 +35,7 @@ namespace ParalelTest.Test
     public void DeleteCartItemTest()
     {
       Report.LogInfo("Starting DeleteCartItemTest test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
 
@@ -67,7 +67,7 @@ namespace ParalelTest.Test
     public void VerifyCart()
     {
       Report.LogInfo("Verify Cart items");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
 
@@ -86,7 +86,7 @@ namespace ParalelTest.Test
     public void CheckOutCartTest()
     {
       Report.LogInfo("Starting CheckOutCartTest test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
       if (cartPage.GetCartItems() == null)

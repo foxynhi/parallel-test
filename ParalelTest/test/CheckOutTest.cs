@@ -12,7 +12,7 @@ namespace ParalelTest.Test
     public void CheckOutCartTest()
     {
       Report.LogInfo("Starting CheckOutCartTest test");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
       if (cartPage.GetCartItems() == null)

@@ -28,7 +28,7 @@ namespace ParalelTest.Utilities
         }
         string fileName = Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true"
           ? Path.Combine(path, $"{TestContext.CurrentContext.Test.MethodName}-CI_Report.html")
-          : Path.Combine(path, $"{TestContext.CurrentContext.Test.MethodName}_{DateTime.Now:dd-MM-yyyy_HH-mm-ss}.html");
+          : Path.Combine(path, $"{TestContext.CurrentContext.Test.Name}_{DateTime.Now:dd-MM-yyyy_HH-mm-ss}.html");
          Console.WriteLine($"Report file path: {fileName}");
 
         var reporter = new ExtentSparkReporter(fileName);

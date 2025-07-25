@@ -9,7 +9,7 @@ namespace ParalelTest.Test
     public void VerifyCart()
     {
       Report.LogInfo("Verify Cart items");
-      LogIn();
+      LogIn(emailDefault, passwordDefault, true);
       var cartPage = homePage.GoToCartPage();
       Assert.That(cartPage.IsOnCartPage, Is.True);
 
